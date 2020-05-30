@@ -1,0 +1,65 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: secrectsync
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: secrectsync
+rules:
+  - apiGroups: [""]
+    resources: ["secrets", "configmaps"]
+    verbs: ["*"]
+  - apiGroups: [""]
+    resources: ["namespaces", "pods", "replicasets"]
+    verbs: ["get"]
+  - apiGroups: [""]
+    resources: ["namespaces"]
+    verbs: ["list", "watch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: secrectsync
+subjects:
+  - kind: ServiceAccount
+    name: secrectsync
+    namespace: default
+roleRef:
+  kind: ClusterRole
+  name: secrectsync
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secrectsync
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: secrectsync
+  template:
+    metadata:
+      labels:
+        name: secrectsync
+    spec:
+      serviceAccountName: secrectsync
+      containers:
+        - name: secrectsync
+          # Replace this with the built image name
+          image: deluxebear/secretsync:latest
+          command:
+          - /usr/local/bin/secretsync
+          imagePullPolicy: Always
+          env:
+            - name: WATCH_NAMESPACE
+              value: ""
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: OPERATOR_NAME
+              value: "secrectsync"
