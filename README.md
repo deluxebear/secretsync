@@ -1,6 +1,7 @@
 # Secret Sync 功能简介
 secret sync 可以用来将 k8s 中的 secret 同步到不同的 namespace（命名空间）。
 例如使用 cert-manager 申请的 Let's Encrypt 泛域名证书希望在不同的 namespace 中复用，则可以使用这个方案。（因为 Let's Encrypt 对证书申请是有数量和时间限制的，如果在多个 namespace 中申请泛域名可能会失败）
+此方案参考自：https://github.com/IBM-Cloud/kube-samples/tree/master/secret-sync-operator
 
 # 安装方法：
 1、部署 deploy 里面的 all-in-one.yaml
@@ -36,3 +37,4 @@ type: Opaque
 3. 进入到 代码目录执行：
 `operator-sdk build <image name>`
 4. 将 all-in-one.yaml 的 image 改成你自己的
+
