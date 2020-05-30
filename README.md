@@ -31,8 +31,8 @@ type: Opaque
 第二行表示将次 secret 同步到 default 命名空间的 mysecret1 和同步到 default2 命名空间的 mysecret1，这样就会分别在这两个命名空间里面自动创建这两个 secret
 
 # 自己构建 image 的方法
-1、将本代码 git pull 到本地
-2、安装 OPERATOR SDK，可以参考： https://sdk.operatorframework.io/docs/install-operator-sdk/
-3、进入到 代码目录执行：
+1. 将本代码 git pull 到本地
+2. 安装 OPERATOR SDK，可以参考： https://sdk.operatorframework.io/docs/install-operator-sdk/
+3. 进入到 代码目录执行：
 `operator-sdk build <image name>`
-4、将 all-in-one.yaml 的 image 改成你自己的
+4. 将 all-in-one.yaml 的 image 改成你自己的
